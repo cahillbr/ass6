@@ -84,7 +84,6 @@ class HashMap:
         return self._capacity
 
     # ------------------------------------------------------------------ #
-
     def put(self, key: str, value: object) -> None:
         """
         Adds a key-value pair to the hash map. Resizes the hash map if the load factor is greater than or equal to 0.5.

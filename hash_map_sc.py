@@ -197,32 +197,31 @@ class HashMap:
 
         return da
 
+    def find_mode(da: DynamicArray) -> (DynamicArray, int):
+        """
+        Finds the mode
+        """
 
-def find_mode(da: DynamicArray) -> (DynamicArray, int):
-    """
-    Finds the mode
-    """
+        map = HashMap()
+        new = da[0]
+        greatest = 1
+        for i in range(da.length()):
+            if map.contains_key(da[i]):
+                map.put(da[i], map.get(da[i]) + 1)
+                if map.get(da[i]) > greatest:
+                    new = da[i]
+                    greatest = map.get(da[i])
+            else:
+                map.put(da[i], 1)
 
-    map = HashMap()
-    new = da[0]
-    greatest = 1
-    for i in range(da.length()):
-        if map.contains_key(da[i]):
-            map.put(da[i], map.get(da[i]) + 1)
-            if map.get(da[i]) > greatest:
-                new = da[i]
-                greatest = map.get(da[i])
-        else:
-            map.put(da[i], 1)
+        output = DynamicArray()
+        data = map.get_keys_and_values()
+        for i in range(data.length()):
+            k, v = data[i]
+            if v == greatest:
+                output.append(k)
 
-    output = DynamicArray()
-    data = map.get_keys_and_values()
-    for i in range(data.length()):
-        k, v = data[i]
-        if v == greatest:
-            output.append(k)
-
-    return output, greatest
+        return output, greatest
 
 
 # ------------------- BASIC TESTING ---------------------------------------- #
