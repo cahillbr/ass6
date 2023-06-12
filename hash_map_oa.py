@@ -1,9 +1,10 @@
-# Name:
-# OSU Email:
+# Name:Brendan Cahill
+# OSU Email:cahillbr@oregonstate.edu
 # Course: CS261 - Data Structures
-# Assignment:
-# Due Date:
-# Description:
+# Assignment:6
+# Due Date:6/9/23
+# Description:hash map final
+
 
 from a6_include import (DynamicArray, DynamicArrayException, HashEntry,
                         hash_function_1, hash_function_2)

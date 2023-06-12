@@ -1,9 +1,9 @@
-# Name:
-# OSU Email:
+# Name:Brendan Cahill
+# OSU Email:cahillbr@oregonstate.edu
 # Course: CS261 - Data Structures
-# Assignment:
-# Due Date:
-# Description:
+# Assignment:6
+# Due Date:6/9/23
+# Description:hash map final
 
 
 from a6_include import (DynamicArray, LinkedList,
@@ -88,140 +88,141 @@ class HashMap:
 
     # ------------------------------------------------------------------ #
 
-        def put(self, key: str, value: object) -> None:
-            """
-            Adds a key-value pair to the hash map. Resizes the hash map if the load factor is greater than or equal to 1.0.
-            """
-            if self.table_load() >= 1.0:
-                self.resize_table(2 * self.get_capacity())
+    def put(self, key: str, value: object) -> None:
+        """
+        Adds a key-value pair to the hash map. Resizes the hash map if the load factor is greater than or equal to 1.0.
+        """
+        if self.table_load() >= 1.0:
+            self.resize_table(2 * self.get_capacity())
 
-            index = self._hash_function(key) % self.get_capacity()
+        index = self._hash_function(key) % self.get_capacity()
 
-            if self.contains_key(key):
-                node = self._buckets[index].contains(key)
-                node.value = value
-            else:
-                self._buckets[index].insert(key, value)
-                self._size += 1
-
-        def empty_buckets(self) -> int:
-            """
-            Returns the number of empty buckets in the hash map.
-            """
-            count = 0
-            for i in range(self._buckets.length()):
-                if self._buckets[i].length() == 0:
-                    count += 1
-
-            return count
-
-        def table_load(self) -> float:
-            """
-            Returns the HashMap's load factor
-            """
-            return self.get_size() / self.get_capacity()
-
-        def clear(self) -> None:
-            """
-            Removes all key-value pairs from the hash map.
-            """
-            for i in range(self._buckets.length()):
-                self._buckets[i] = LinkedList()
-
-            self._size = 0
-
-        def resize_table(self, new_capacity: int) -> None:
-            """
-            Resizes the HashTable
-            """
-            if new_capacity < 1:
-                return
-
-            if new_capacity < self._size:
-                new_capacity = 2 * self.get_size()
-
-            if not self._is_prime(new_capacity):
-                new_capacity = self._next_prime(new_capacity)
-
-            keys_and_values = self.get_keys_and_values()
-            if keys_and_values is None:
-                return
-
-            self.clear()
-            for i in range(self._capacity, new_capacity):
-                self._buckets.append(LinkedList())
-
-            self._capacity = new_capacity
-
-            for i in range(keys_and_values.length()):
-                k, v = keys_and_values[i]
-                index = self._hash_function(k) % self.get_capacity()
-                self._buckets[index].insert(k, v)
-                self._size += 1
-
-        def get(self, key: str):
-            """
-            Returns the value associated with the given key, or None if the key is not in the map.
-            """
-            index = self._hash_function(key) % self.get_capacity()
+        if self.contains_key(key):
             node = self._buckets[index].contains(key)
-            return node.value if node else None
+            node.value = value
+        else:
+            self._buckets[index].insert(key, value)
+            self._size += 1
 
-        def contains_key(self, key: str) -> bool:
-            """
-            Returns True if the given key is in the hash map, False otherwise.
-            """
-            return self.get(key) != None
-
-        def remove(self, key: str) -> None:
-            """
-            Removes the key-value pair with the given key from the hash map.
-            """
-            if not self.contains_key(key):
-                return
-
-            index = self._hash_function(key) % self.get_capacity()
-            self._buckets[index].remove(key)
-            self._size -= 1
-
-        def get_keys_and_values(self) -> DynamicArray:
-            """
-            Returns a dynamic array containing all key-value pairs in the hash map.
-            """
-            da = DynamicArray()
-            for i in range(self._buckets.length()):
-                lst = self._buckets[i]
-                if lst.length() > 0:
-                    for node in lst:
-                        da.append((node.key, node.value))
-
-            return da
-
-    def find_mode(da: DynamicArray) -> (DynamicArray, int):
+    def empty_buckets(self) -> int:
         """
-        Finds the mode
+        Returns the number of empty buckets in the hash map.
         """
+        count = 0
+        for i in range(self._buckets.length()):
+            if self._buckets[i].length() == 0:
+                count += 1
 
-        map = HashMap()
-        new = da[0]
-        greatest = 1
-        for i in range(da.length()):
-            if map.contains_key(da[i]):
-                map.put(da[i], map.get(da[i]) + 1)
-                if map.get(da[i]) > greatest:
-                    new = da[i]
-                    greatest = map.get(da[i])
-            else:
-                map.put(da[i], 1)
+        return count
 
-        output = DynamicArray()
-        data = map.get_keys_and_values()
-        for i in range(data.length()):
-            k, v = data[i]
-            if v == greatest:
-                output.append(k)
+    def table_load(self) -> float:
+        """
+        Returns the HashMap's load factor
+        """
+        return self.get_size() / self.get_capacity()
 
-        return output, greatest
+    def clear(self) -> None:
+        """
+        Removes all key-value pairs from the hash map.
+        """
+        for i in range(self._buckets.length()):
+            self._buckets[i] = LinkedList()
+
+        self._size = 0
+
+    def resize_table(self, new_capacity: int) -> None:
+        """
+        Resizes the HashTable
+        """
+        if new_capacity < 1:
+            return
+
+        if new_capacity < self._size:
+            new_capacity = 2 * self.get_size()
+
+        if not self._is_prime(new_capacity):
+            new_capacity = self._next_prime(new_capacity)
+
+        keys_and_values = self.get_keys_and_values()
+        if keys_and_values is None:
+            return
+
+        self.clear()
+        for i in range(self._capacity, new_capacity):
+            self._buckets.append(LinkedList())
+
+        self._capacity = new_capacity
+
+        for i in range(keys_and_values.length()):
+            k, v = keys_and_values[i]
+            index = self._hash_function(k) % self.get_capacity()
+            self._buckets[index].insert(k, v)
+            self._size += 1
+
+    def get(self, key: str):
+        """
+        Returns the value associated with the given key, or None if the key is not in the map.
+        """
+        index = self._hash_function(key) % self.get_capacity()
+        node = self._buckets[index].contains(key)
+        return node.value if node else None
+
+    def contains_key(self, key: str) -> bool:
+        """
+        Returns True if the given key is in the hash map, False otherwise.
+        """
+        return self.get(key) != None
+
+    def remove(self, key: str) -> None:
+        """
+        Removes the key-value pair with the given key from the hash map.
+        """
+        if not self.contains_key(key):
+            return
+
+        index = self._hash_function(key) % self.get_capacity()
+        self._buckets[index].remove(key)
+        self._size -= 1
+
+    def get_keys_and_values(self) -> DynamicArray:
+        """
+        Returns a dynamic array containing all key-value pairs in the hash map.
+        """
+        da = DynamicArray()
+        for i in range(self._buckets.length()):
+            lst = self._buckets[i]
+            if lst.length() > 0:
+                for node in lst:
+                    da.append((node.key, node.value))
+
+        return da
+
+
+def find_mode(da: DynamicArray) -> (DynamicArray, int):
+    """
+    Finds the mode
+    """
+
+    map = HashMap()
+    new = da[0]
+    greatest = 1
+    for i in range(da.length()):
+        if map.contains_key(da[i]):
+            map.put(da[i], map.get(da[i]) + 1)
+            if map.get(da[i]) > greatest:
+                new = da[i]
+                greatest = map.get(da[i])
+        else:
+            map.put(da[i], 1)
+
+    output = DynamicArray()
+    data = map.get_keys_and_values()
+    for i in range(data.length()):
+        k, v = data[i]
+        if v == greatest:
+            output.append(k)
+
+    return output, greatest
 
 
 # ------------------- BASIC TESTING ---------------------------------------- #
